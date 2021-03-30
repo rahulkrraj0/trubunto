@@ -1,0 +1,29 @@
+name: Linux RDP
+on: 
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: actions/checkout@v2
+    
+    - name: Give Executable Permission to required script
+      run: |
+        chmod 777 manually-run.sh
+    
+    - name: Install Packages and Setup Everything
+      run: |
+        sudo apt update
+        sudo apt install gnome-session gdm3
+        sudo apt install xrdp
+        sudo ufw allow 3389/tcp
+        sudo /etc/init.d/xrdp restart
+               
+   
+    - name: Tmate Session
+      uses: mxschmitt/action-tmate@v3
